@@ -1,5 +1,14 @@
 @import '../variables.scss';
 
+.container {
+  width: 800px;
+}
+
+.content {
+  font-size: 12pt;
+  text-align: left;
+}
+
 .row {
   border-bottom: 1px solid $white;
   padding: 12px;

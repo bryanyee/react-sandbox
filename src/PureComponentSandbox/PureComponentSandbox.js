@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component, Fragment, PureComponent } from 'react';
+import React, { Component, PureComponent } from 'react';
 
 import './PureComponentSandbox.scss';
 
@@ -22,44 +22,60 @@ class PureComponentSandbox extends Component {
   test2 = () => 5;
 
   render() {
-    console.log('render PureComponentSandbox');
     return (
-    <Fragment>
-      <FunctionRow content={this.state.counter} name="FunctionRow state.counter" />
-      <FunctionRow content={10} name="FunctionRow static" />
-      <PureComponentRow content={10} name="PureComponentRow static" />
-      <PureComponentRow content={10} arbitraryProp={{ one: 1 }} name="PureComponentRow object prop" />
-      <PureComponentRow content={10} arbitraryProp={() => 5} name="PureComponentRow inline function prop" />
-      <PureComponentRow content={10} arbitraryProp={this.test2} name="PureComponentRow method prop"/>
-      <FunctionRow content={10} arbitraryProp={this.test2} name="FunctionRow object prop" />
-    </Fragment>
+      <div className="container">
+        <div className="row mb-5 color-blue">
+          <div className="col-6">App State</div>
+          <div className="col-6">{this.state.counter}</div>
+        </div>
+        <div className="content">
+          <div className="row color-blue">
+            <div className="col-4">Child Component Type</div>
+            <div className="col-4">Prop Type</div>
+            <div className="col-4">Render</div>
+          </div>
+          <ComponentRow arbitraryProp={this.state.counter} propName="state.counter" />
+          <ComponentRow arbitraryProp={10} propName="Number" />
+          <ComponentRow arbitraryProp={{ one: 1 }} propName="Object" />
+          <ComponentRow arbitraryProp={() => 5} propName="Inline Arrow Function" />
+          <ComponentRow arbitraryProp={this.test2} propName="Parent Method" />
+          <PureComponentRow arbitraryProp={this.state.counter} propName="state.counter" />
+          <PureComponentRow arbitraryProp={10} propName="Number" />
+          <PureComponentRow arbitraryProp={{ one: 1 }} propName="Object" />
+          <PureComponentRow arbitraryProp={() => 5} propName="Inline Arrow Function" />
+          <PureComponentRow arbitraryProp={this.test2} propName="Parent Method"/>
+        </div>
+      </div>
     );
   }
 }
 
 export default PureComponentSandbox;
 
-const FunctionRow = ({ content, name }) => {
-  console.log(`render ${name}`);
-  return (
-    <div className="row">
-      {content}
-    </div>
-  );
+class ComponentRow extends Component {
+  render() {
+    return (
+      <div className="row">
+        <div className="col-4">Component</div>
+        <div className="col-4">{this.props.propName}</div>
+        <div className="col-4">{Math.random()}</div>
+      </div>
+    );
+  }
 }
 
-FunctionRow.propTypes = {
+ComponentRow.propTypes = {
   arbitraryProp: PropTypes.any,
-  content: PropTypes.any,
-  name: PropTypes.string.isRequired,
+  propName: PropTypes.string.isRequired,
 };
 
 class PureComponentRow extends PureComponent {
   render() {
-    console.log(`render ${this.props.name}`);
     return (
       <div className="row">
-        {this.props.content}
+        <div className="col-4">PureComponent</div>
+        <div className="col-4">{this.props.propName}</div>
+        <div className="col-4">{Math.random()}</div>
       </div>
     );
   }
@@ -67,6 +83,5 @@ class PureComponentRow extends PureComponent {
 
 PureComponentRow.propTypes = {
   arbitraryProp: PropTypes.any,
-  content: PropTypes.any,
-  name: PropTypes.string.isRequired,
+  propName: PropTypes.string.isRequired,
 }
