@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 
+import HoverText from './HoverText';
 import Spinners from './Spinners';
 import Slide from './Slide';
 
@@ -15,6 +16,7 @@ const AnimationSandbox = () => (
   <Fragment>
     <Spinners />
     <Slide />
+    <HoverText />
   </Fragment>
 );
 
