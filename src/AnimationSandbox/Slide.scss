@@ -1,0 +1,13 @@
+.slide {
+  animation: side-to-side infinite 3s alternate ease-in-out;
+}
+
+@keyframes side-to-side {
+  from {
+    transform: translateX(-200px);
+  }
+
+  to {
+    transform: translateX(200px);
+  }
+}
