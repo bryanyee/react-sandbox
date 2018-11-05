@@ -10,14 +10,16 @@ import './App.scss';
 const App = () => (
   <div className="app">
     <div className="app-container">
-      <BrowserRouter basename="/">
-        <Fragment>
-          <Route exact path="/" component={() => <div />} />
-          <Route path="/animation_sandbox" component={AnimationSandbox} />
-          <Route path="/pure_component_sandbox" component={PureComponentSandbox} />
-          <Route component={Links} />
-        </Fragment>
-      </BrowserRouter>
+      <div className="mb-5">
+        <BrowserRouter basename="/">
+          <Fragment>
+            <Route exact path="/" component={() => <div />} />
+            <Route path="/animation_sandbox" component={AnimationSandbox} />
+            <Route path="/pure_component_sandbox" component={PureComponentSandbox} />
+            <Route component={Links} />
+          </Fragment>
+        </BrowserRouter>
+      </div>
     </div>
   </div>
 );

@@ -1,0 +1,12 @@
+.my-fade {
+  opacity: 0;
+  transition: opacity 500ms linear;
+}
+
+.my-fade-enter-active, .my-fade-enter-done {
+  opacity: 1;
+}
+
+.my-fade-exit-active, .my-fade-exit-done {
+  opacity: 0;
+}
