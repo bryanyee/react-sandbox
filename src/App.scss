@@ -1,0 +1,17 @@
+@import './variables.scss';
+
+.app {
+  text-align: center;
+}
+
+.app-container {
+  align-items: center;
+  color: $white;
+  background-color: $darkgray;
+  display: flex;
+  font-size: calc(10px + 2vmin);
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+}

@@ -1,5 +1,9 @@
 @import '../variables.scss';
 
+.app-logo {
+  height: 40vmin;
+}
+
 .spin-very-slow {
   animation: spin-animation infinite 20s linear;
 }
@@ -22,7 +26,6 @@
     border-style: solid;
     border-top-color: $appblue;
     content: '';
-    display: inline-block;
     height: 100%;
   }
 }
