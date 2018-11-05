@@ -49,7 +49,10 @@ class ElementTransitions extends Component {
           timeout={500}
         >
           {() => (
-            <div className="my-fade">{VALUES[this.state.index]}</div>
+            <div className="my-fade">
+              <span>Fade Transition </span>
+              <strong className="color-blue">{VALUES[this.state.index]}</strong>
+            </div>
           )}
         </CSSTransition>
       </div>
