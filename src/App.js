@@ -35,7 +35,9 @@ Animation: slide input bottom border
 Throttle/debounce
 Fetch data on scroll to page end
 Giphy API app
+React Hooks
 Redux TODO
+React Context API TODO
 D3
 Yelp Graphql API and react-apollo
 
