@@ -6,13 +6,6 @@ import HoverText from './HoverText';
 import Spinners from './Spinners';
 import Slide from './Slide';
 
-/*
-
-element pop in/out
-slide input bottom border
-
-*/
-
 const AnimationSandbox = () => (
   <Fragment>
     <Spinners />

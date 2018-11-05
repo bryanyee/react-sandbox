@@ -25,3 +25,18 @@ const App = () => (
 );
 
 export default App;
+
+/* TODO
+
+separate containers for each sandbox
+
+Animation: element pop in/out
+Animation: slide input bottom border
+Throttle/debounce
+Fetch data on scroll to page end
+Giphy API app
+Redux TODO
+D3
+Yelp Graphql API and react-apollo
+
+*/
