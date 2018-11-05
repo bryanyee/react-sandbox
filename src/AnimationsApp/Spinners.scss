@@ -1,0 +1,59 @@
+@import '../variables.scss';
+
+.spin-very-slow {
+  animation: spin-animation infinite 20s linear;
+}
+
+.spin-medium {
+  animation: spin-animation infinite 800ms linear;
+}
+
+.spin-fast {
+  animation: spin-animation infinite 500ms linear;
+}
+
+%spinner {
+  display: flex;
+  justify-content: center;
+
+  &::after {
+    border-color: $lightgray;
+    border-radius: 50%;
+    border-style: solid;
+    border-top-color: $appblue;
+    content: '';
+    display: inline-block;
+    height: 100%;
+  }
+}
+
+.spinner-sm {
+  @extend %spinner;
+
+  height: 16px;
+
+  &::after {
+    border-width: 2px;
+    width: 16px;
+  }
+}
+
+.spinner-md {
+  @extend %spinner;
+
+  height: 32px;
+
+  &::after {
+    border-width: 3px;
+    width: 32px;
+  }
+}
+
+@keyframes spin-animation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
