@@ -11,8 +11,8 @@ const Links = () => (
     <Link className="d-block" to={{ pathname: '/animation_sandbox' }}>
       Animation Sandbox
     </Link>
-    <Link className="d-block" to={{ pathname: '/pure_component_sandbox' }}>
-      Pure Component Sandbox
+    <Link className="d-block" to={{ pathname: '/render_and_memo_sandbox' }}>
+      Render And Memo Sandbox
     </Link>
     <Link className="d-block" to={{ pathname: '/react_hooks_sandbox' }}>
       React Hooks Sandbox

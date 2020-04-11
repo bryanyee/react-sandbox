@@ -3,8 +3,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import AnimationSandbox from './AnimationSandbox/AnimationSandbox';
 import Links from './Links';
-import PureComponentSandbox from './PureComponentSandbox/PureComponentSandbox';
 import ReactHooksSandbox from './ReactHooksSandbox/ReactHooksSandbox';
+import RenderAndMemoSandbox from './RenderAndMemoSandbox/RenderAndMemoSandbox';
 import XssSandbox from './XssSandbox/XssSandbox';
 
 import './App.scss';
@@ -17,7 +17,7 @@ const App = () => (
           <Fragment>
             <Route exact path="/" component={() => <div />} />
             <Route path="/animation_sandbox" component={AnimationSandbox} />
-            <Route path="/pure_component_sandbox" component={PureComponentSandbox} />
+            <Route path="/render_and_memo_sandbox" component={RenderAndMemoSandbox} />
             <Route path="/react_hooks_sandbox" component={ReactHooksSandbox} />
             <Route path="/xss_sandbox" component={XssSandbox} />
             <Route component={Links} />
@@ -39,7 +39,6 @@ Animation: slide input bottom border
 Throttle/debounce
 Fetch data on scroll to page end
 Giphy API app
-React Hooks
 Redux TODO
 React Context API TODO
 D3
