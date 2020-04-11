@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component, memo, useEffect, useState } from 'react';
 import _ from 'underscore';
 
-import './RenderAndMemoSandbox.scss';
+import DomRemovalObserver from './DomRemovalObserver';
 
-// Add dom observers and key props
+import './RenderAndMemoSandbox.scss';
 
 class RenderAndMemoSandbox extends Component {
   constructor(props) {
@@ -12,10 +12,18 @@ class RenderAndMemoSandbox extends Component {
     this.state = {
       counter: 0,
     };
+    this.container = null;
   }
 
   componentDidMount() {
     setInterval(this.incrementCounter, 1000);
+
+    // Log in the browser console whenver an element is removed.
+    new DomRemovalObserver(this.container, this.domRemovalhandler).start();
+  }
+
+  domRemovalhandler = node => {
+    console.log('Removed node:', node.dataset.propName);
   }
 
   incrementCounter = () => {
@@ -30,7 +38,7 @@ class RenderAndMemoSandbox extends Component {
     const memoizedValue = memoizedTestFunction('anyArg');
 
     return (
-      <div className="container">
+      <div className="container" ref={c => this.container = c}>
         <div className="row border-bottom mb-5 color-blue">
           <div className="col-6">App State</div>
           <div className="col-6">{this.state.counter}</div>
@@ -41,7 +49,12 @@ class RenderAndMemoSandbox extends Component {
               <div>This app demonstrates render optimization techniques, when using features such as React.memo, PureComponent, and componentShouldUpdate.</div><br />
               <div>Preventing re-renders based on the given props only works when using these techniques. If these are not used in child components, then passing the same reference from a parent component (such as when using the useMemo hook or _.memoize) will not help prevent re-renders.</div><br />
               <div>Caveat: Optimizing render performance is not necessary for most React apps. Even when render is called multiple times, React's reconciliation algorithm will not will destroy and recreate DOM nodes when component instances remain the same.</div><br />
-              <div>In this demo, app state changes every second. The "Random Render Value" represents when a new value is calculated when the child component re-renders.</div>
+              <div>In this demo, app state changes every second. The following things happen on each state change:</div>
+              <ul>
+                <li>The "Random Render Value" represents when a new value is calculated when the child component re-renders.</li>
+                <li>The "Random Mount Value" represents when a new value is calculated when a child component mounts.</li>
+                <li>A MutationObserver is used to listen for when DOM elements are removed. These events are logged to the console.</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -85,7 +98,7 @@ const ChildComponent = props => {
   }, []);
 
   return (
-    <div className="row border-bottom">
+    <div className="row border-bottom" data-prop-name={`${props.type}, ${props.propName}`}>
       <div className="col-3">{props.type}</div>
       <div className="col-3">{props.propName}</div>
       <div className="col-2">{buildRandomNumber()}</div>
