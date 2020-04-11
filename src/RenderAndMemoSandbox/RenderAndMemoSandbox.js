@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component, memo } from 'react';
+import _ from 'underscore';
 
 import './RenderAndMemoSandbox.scss';
 
 // Add colors to text
 // Add project description
-// Add memoized props
+// Add dom observers and key props
 
 class RenderAndMemoSandbox extends Component {
   constructor(props) {
@@ -26,6 +27,10 @@ class RenderAndMemoSandbox extends Component {
   test2 = () => 5;
 
   render() {
+    const testFunction = _anyArg => 5;
+    const memoizedTestFunction = _.memoize(testFunction);
+    const memoizedValue = memoizedTestFunction('anyArg');
+
     return (
       <div className="container">
         <div className="row mb-5 color-blue">
@@ -43,11 +48,13 @@ class RenderAndMemoSandbox extends Component {
           <ChildComponent arbitraryProp={{ one: 1 }} propName="Object" />
           <ChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" />
           <ChildComponent arbitraryProp={this.test2} propName="Parent Method" />
+          <ChildComponent arbitraryProp={memoizedValue} propName="Memoized value" />
           <MemoChildComponent arbitraryProp={this.state.counter} propName="state.counter" />
           <MemoChildComponent arbitraryProp={10} propName="Number" />
           <MemoChildComponent arbitraryProp={{ one: 1 }} propName="Object" />
           <MemoChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" />
           <MemoChildComponent arbitraryProp={this.test2} propName="Parent Method"/>
+          <MemoChildComponent arbitraryProp={memoizedValue} propName="Memoized value" />
         </div>
       </div>
     );
