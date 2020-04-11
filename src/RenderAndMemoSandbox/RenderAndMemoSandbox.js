@@ -4,7 +4,6 @@ import _ from 'underscore';
 
 import './RenderAndMemoSandbox.scss';
 
-// Add colors to text
 // Add project description
 // Add dom observers and key props
 
@@ -39,22 +38,23 @@ class RenderAndMemoSandbox extends Component {
         </div>
         <div className="content">
           <div className="row color-blue">
-            <div className="col-4">Child Component Type</div>
-            <div className="col-4">Prop Type</div>
-            <div className="col-4">Random Render Value</div>
+            <div className="col-3">Child Component Type</div>
+            <div className="col-3">Prop Type</div>
+            <div className="col-3">Random Render Value</div>
+            <div className="col-3">Re-render?</div>
           </div>
-          <ChildComponent arbitraryProp={this.state.counter} propName="state.counter" />
-          <ChildComponent arbitraryProp={10} propName="Number" />
-          <ChildComponent arbitraryProp={{ one: 1 }} propName="Object" />
-          <ChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" />
-          <ChildComponent arbitraryProp={this.test2} propName="Parent Method" />
-          <ChildComponent arbitraryProp={memoizedValue} propName="Memoized value" />
-          <MemoChildComponent arbitraryProp={this.state.counter} propName="state.counter" />
-          <MemoChildComponent arbitraryProp={10} propName="Number" />
-          <MemoChildComponent arbitraryProp={{ one: 1 }} propName="Object" />
-          <MemoChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" />
-          <MemoChildComponent arbitraryProp={this.test2} propName="Parent Method"/>
-          <MemoChildComponent arbitraryProp={memoizedValue} propName="Memoized value" />
+          <ChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' />
+          <ChildComponent arbitraryProp={10} propName="Number" rerender='Yes' />
+          <ChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' />
+          <ChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' />
+          <ChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='Yes' />
+          <ChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='Yes' />
+          <MemoChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' />
+          <MemoChildComponent arbitraryProp={10} propName="Number" rerender='No' />
+          <MemoChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' />
+          <MemoChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' />
+          <MemoChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='No' />
+          <MemoChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='No' />
         </div>
       </div>
     );
@@ -65,26 +65,30 @@ export default RenderAndMemoSandbox;
 
 const ChildComponent = props => (
   <div className="row">
-    <div className="col-4">Function</div>
-    <div className="col-4">{props.propName}</div>
-    <div className="col-4">{Math.random()}</div>
+    <div className="col-3">Function</div>
+    <div className="col-3">{props.propName}</div>
+    <div className="col-3">{Math.random()}</div>
+    <div className="col-3">{props.rerender}</div>
   </div>
 );
 
 ChildComponent.propTypes = {
   arbitraryProp: PropTypes.any,
   propName: PropTypes.string.isRequired,
+  rerender: PropTypes.string.isRequired,
 };
 
 const MemoChildComponent = memo(props => (
   <div className="row">
-    <div className="col-4">React.memo(Function)</div>
-    <div className="col-4">{props.propName}</div>
-    <div className="col-4">{Math.random()}</div>
+    <div className="col-3">React.memo(Function)</div>
+    <div className="col-3">{props.propName}</div>
+    <div className="col-3">{Math.random()}</div>
+    <div className="col-3">{props.rerender}</div>
   </div>
 ));
 
 MemoChildComponent.propTypes = {
   arbitraryProp: PropTypes.any,
   propName: PropTypes.string.isRequired,
+  rerender: PropTypes.string.isRequired,
 }
