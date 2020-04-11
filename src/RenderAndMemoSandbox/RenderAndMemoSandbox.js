@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component, memo } from 'react';
+import React, { Component, memo, useEffect, useState } from 'react';
 import _ from 'underscore';
 
 import './RenderAndMemoSandbox.scss';
@@ -49,21 +49,25 @@ class RenderAndMemoSandbox extends Component {
           <div className="row border-bottom color-blue">
             <div className="col-3">Child Component Type</div>
             <div className="col-3">Prop Type</div>
-            <div className="col-3">Random Render Value</div>
-            <div className="col-3">Re-render?</div>
+            <div className="col-2">Random Render Value</div>
+            <div className="col-1">Re-render?</div>
+            <div className="col-2">Random Mount Value</div>
+            <div className="col-1">Re-mount?</div>
           </div>
-          <ChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' />
-          <ChildComponent arbitraryProp={10} propName="Number" rerender='Yes' />
-          <ChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' />
-          <ChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' />
-          <ChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='Yes' />
-          <ChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='Yes' />
-          <MemoChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' />
-          <MemoChildComponent arbitraryProp={10} propName="Number" rerender='No' />
-          <MemoChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' />
-          <MemoChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' />
-          <MemoChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='No' />
-          <MemoChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='No' />
+          <ChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' remount='No' />
+          <ChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' remount='No' />
+          <ChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' remount='No' />
+          <ChildComponent arbitraryProp={10} propName="Number" rerender='Yes' remount='No' />
+          <ChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='Yes' remount='No' />
+          <ChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='Yes' remount='No' />
+          <ChildComponent key={Math.random()} propName="Unique key" rerender='Yes' remount='Yes' />
+          <MemoChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' remount='No' />
+          <MemoChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' remount='No' />
+          <MemoChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' remount='No' />
+          <MemoChildComponent arbitraryProp={10} propName="Number" rerender='No' remount='No' />
+          <MemoChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='No' remount='No' />
+          <MemoChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='No' remount='No' />
+          <MemoChildComponent key={Math.random()} propName="Unique key" rerender='Yes' remount='Yes' />
         </div>
       </div>
     );
@@ -72,34 +76,40 @@ class RenderAndMemoSandbox extends Component {
 
 export default RenderAndMemoSandbox;
 
-const ChildComponent = props => (
-  <div className="row border-bottom">
-    <div className="col-3">Function</div>
-    <div className="col-3">{props.propName}</div>
-    <div className="col-3">{Math.random()}</div>
-    <div className="col-3">{props.rerender}</div>
-  </div>
-);
+const buildRandomNumber = () => Math.random().toFixed(4);
+
+const ChildComponent = props => {
+  const [mountValue, setMountValue] = useState(buildRandomNumber());
+  useEffect(() => {
+    setMountValue(buildRandomNumber());
+  }, []);
+
+  return (
+    <div className="row border-bottom">
+      <div className="col-3">{props.type}</div>
+      <div className="col-3">{props.propName}</div>
+      <div className="col-2">{buildRandomNumber()}</div>
+      <div className="col-1">{props.rerender}</div>
+      <div className="col-2">{mountValue}</div>
+      <div className="col-1">{props.remount}</div>
+    </div>
+  );
+}
+
+ChildComponent.defaultProps = {
+  type: 'Function',
+}
 
 ChildComponent.propTypes = {
   arbitraryProp: PropTypes.any,
   propName: PropTypes.string.isRequired,
+  remount: PropTypes.string.isRequired,
   rerender: PropTypes.string.isRequired,
+  type: PropTypes.string,
 };
 
 // Prevent re-render of the component when given the same props.
 // The same technique can be achieved with PureComponent and shouldComponentUpdate.
 const MemoChildComponent = memo(props => (
-  <div className="row border-bottom">
-    <div className="col-3">React.memo(Function)</div>
-    <div className="col-3">{props.propName}</div>
-    <div className="col-3">{Math.random()}</div>
-    <div className="col-3">{props.rerender}</div>
-  </div>
+  <ChildComponent type='React.memo(Function)' {...props} />
 ));
-
-MemoChildComponent.propTypes = {
-  arbitraryProp: PropTypes.any,
-  propName: PropTypes.string.isRequired,
-  rerender: PropTypes.string.isRequired,
-}
