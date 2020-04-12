@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component, memo, useEffect, useState } from 'react';
-import _ from 'underscore';
 
 import DomRemovalObserver from '../shared/DomRemovalObserver';
 import { buildRandomNumber } from '../shared/utilities';
@@ -16,6 +15,10 @@ class RenderAndMemoSandbox extends Component {
     this.container = null;
     this.domRemovalObserver = null;
     this.timer = null;
+
+    // Used for passing the same object reference. In a function component, this
+    // would be accomplished with the useMemo hook.
+    this.objectReference = { test: 'This is always the same object.' };
   }
 
   componentDidMount() {
@@ -42,9 +45,6 @@ class RenderAndMemoSandbox extends Component {
   test2 = () => 5;
 
   render() {
-    const testFunction = _anyArg => 5;
-    const memoizedTestFunction = _.memoize(testFunction);
-    const memoizedValue = memoizedTestFunction('anyArg');
 
     return (
       <div className="container" ref={c => this.container = c}>
@@ -81,14 +81,14 @@ class RenderAndMemoSandbox extends Component {
           <ChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' remount='No' />
           <ChildComponent arbitraryProp={10} propName="Number" rerender='Yes' remount='No' />
           <ChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='Yes' remount='No' />
-          <ChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='Yes' remount='No' />
+          <ChildComponent arbitraryProp={this.objectReference} propName="Memoized value" rerender='Yes' remount='No' />
           <ChildComponent key={buildRandomNumber(4)} propName="Unique key" rerender='Yes' remount='Yes' />
           <MemoChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' remount='No' />
           <MemoChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' remount='No' />
           <MemoChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' remount='No' />
           <MemoChildComponent arbitraryProp={10} propName="Number" rerender='No' remount='No' />
           <MemoChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='No' remount='No' />
-          <MemoChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='No' remount='No' />
+          <MemoChildComponent arbitraryProp={this.objectReference} propName="Memoized value" rerender='No' remount='No' />
           <MemoChildComponent key={buildRandomNumber(4)} propName="Unique key" rerender='Yes' remount='Yes' />
         </div>
       </div>
