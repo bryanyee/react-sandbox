@@ -45,7 +45,6 @@ class RenderAndMemoSandbox extends Component {
   test2 = () => 5;
 
   render() {
-
     return (
       <div className="container" ref={c => this.container = c}>
         <div className="row border-bottom mb-5 color-blue">
