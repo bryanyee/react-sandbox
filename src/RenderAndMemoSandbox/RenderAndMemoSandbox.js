@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component, memo, useEffect, useState } from 'react';
 import _ from 'underscore';
 
-import DomRemovalObserver from './DomRemovalObserver';
+import DomRemovalObserver from '../shared/DomRemovalObserver';
+import { buildRandomNumber } from '../shared/utilities';
 
 import './RenderAndMemoSandbox.scss';
 
@@ -31,7 +32,7 @@ class RenderAndMemoSandbox extends Component {
   }
 
   domRemovalhandler = node => {
-    console.log('Removed node:', node.dataset.propName);
+    console.log('Removed node:', node.dataset.name);
   }
 
   incrementCounter = () => {
@@ -54,7 +55,7 @@ class RenderAndMemoSandbox extends Component {
         <div className="content">
           <div className="row mb-5 color-blue">
             <div className="col">
-              <div>This app demonstrates render optimization techniques, when using features such as React.memo, PureComponent, and componentShouldUpdate.</div><br />
+              <div>This app demonstrates render optimization techniques, when using features such as React.memo, PureComponent, and shouldComponentUpdate.</div><br />
               <div>Preventing re-renders based on the given props only works when using these techniques. If these are not used in child components, then passing the same reference from a parent component (such as when using the useMemo hook or _.memoize) will not help prevent re-renders.</div><br />
               <div>Caveat: Optimizing render performance is not necessary for most React apps. Even when render is called multiple times, React's reconciliation algorithm will not will destroy and recreate DOM nodes when component instances remain the same.</div><br />
               <div>In this demo, app state changes every second. The following things happen on each state change:</div>
@@ -81,14 +82,14 @@ class RenderAndMemoSandbox extends Component {
           <ChildComponent arbitraryProp={10} propName="Number" rerender='Yes' remount='No' />
           <ChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='Yes' remount='No' />
           <ChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='Yes' remount='No' />
-          <ChildComponent key={Math.random()} propName="Unique key" rerender='Yes' remount='Yes' />
+          <ChildComponent key={buildRandomNumber(4)} propName="Unique key" rerender='Yes' remount='Yes' />
           <MemoChildComponent arbitraryProp={this.state.counter} propName="state.counter" rerender='Yes' remount='No' />
           <MemoChildComponent arbitraryProp={{ one: 1 }} propName="Object" rerender='Yes' remount='No' />
           <MemoChildComponent arbitraryProp={() => 5} propName="Inline Arrow Function" rerender='Yes' remount='No' />
           <MemoChildComponent arbitraryProp={10} propName="Number" rerender='No' remount='No' />
           <MemoChildComponent arbitraryProp={this.test2} propName="Parent Method" rerender='No' remount='No' />
           <MemoChildComponent arbitraryProp={memoizedValue} propName="Memoized value" rerender='No' remount='No' />
-          <MemoChildComponent key={Math.random()} propName="Unique key" rerender='Yes' remount='Yes' />
+          <MemoChildComponent key={buildRandomNumber(4)} propName="Unique key" rerender='Yes' remount='Yes' />
         </div>
       </div>
     );
@@ -97,19 +98,17 @@ class RenderAndMemoSandbox extends Component {
 
 export default RenderAndMemoSandbox;
 
-const buildRandomNumber = () => Math.random().toFixed(4);
-
 const ChildComponent = props => {
-  const [mountValue, setMountValue] = useState(buildRandomNumber());
+  const [mountValue, setMountValue] = useState(buildRandomNumber(4));
   useEffect(() => {
-    setMountValue(buildRandomNumber());
+    setMountValue(buildRandomNumber(4));
   }, []);
 
   return (
-    <div className="row border-bottom" data-prop-name={`${props.type}, ${props.propName}`}>
+    <div className="row border-bottom" data-name={`${props.type}, ${props.propName}`}>
       <div className="col-3">{props.type}</div>
       <div className="col-3">{props.propName}</div>
-      <div className="col-2">{buildRandomNumber()}</div>
+      <div className="col-2">{buildRandomNumber(4)}</div>
       <div className="col-1">{props.rerender}</div>
       <div className="col-2">{mountValue}</div>
       <div className="col-1">{props.remount}</div>
