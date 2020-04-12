@@ -13,13 +13,21 @@ class RenderAndMemoSandbox extends Component {
       counter: 0,
     };
     this.container = null;
+    this.domRemovalObserver = null;
+    this.timer = null;
   }
 
   componentDidMount() {
-    setInterval(this.incrementCounter, 1000);
+    this.timer = setInterval(this.incrementCounter, 1000);
 
     // Log in the browser console whenver an element is removed.
-    new DomRemovalObserver(this.container, this.domRemovalhandler).start();
+    this.domRemovalObserver = new DomRemovalObserver(this.container, this.domRemovalhandler);
+    this.domRemovalObserver.start();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.domRemovalObserver.disconnect();
   }
 
   domRemovalhandler = node => {

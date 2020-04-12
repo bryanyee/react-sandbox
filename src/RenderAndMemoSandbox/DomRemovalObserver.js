@@ -5,6 +5,10 @@ class DomRemovalObserver {
     this.observer = new MutationObserver(this.mutationHandler);
   }
 
+  start = () => {
+    this.observer.observe(this.targetNode, { childList: true, subtree: true });
+  }
+
   mutationHandler = (mutationList, observer) => {
     mutationList.forEach(mutation => {
       if (mutation.type === 'childList' && mutation.removedNodes.length !== 0) {
@@ -15,8 +19,8 @@ class DomRemovalObserver {
     });
   }
 
-  start() {
-    this.observer.observe(this.targetNode, { childList: true, subtree: true });
+  disconnect = () => {
+    this.observer.disconnect();
   }
 }
 
