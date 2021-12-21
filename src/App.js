@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Routes, Outlet } from 'react-router-dom';
 
 import AnimationSandbox from './AnimationSandbox/AnimationSandbox';
 import Links from './Links';
@@ -9,19 +9,21 @@ import XssSandbox from './XssSandbox/XssSandbox';
 
 import './App.scss';
 
+const Layout = () => <><Links /><Outlet /></>;
+
 const App = () => (
   <div className="app">
     <div className="app-container">
       <div className="mb-5">
-        <BrowserRouter basename="/">
-          <Fragment>
-            <Route exact path="/" component={() => <div />} />
-            <Route path="/animation_sandbox" component={AnimationSandbox} />
-            <Route path="/render_and_memo_sandbox" component={RenderAndMemoSandbox} />
-            <Route path="/react_hooks_sandbox" component={ReactHooksSandbox} />
-            <Route path="/xss_sandbox" component={XssSandbox} />
-            <Route component={Links} />
-          </Fragment>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/*" element={<Layout />}>
+              <Route path="animation_sandbox" element={<AnimationSandbox />} />
+              <Route path="render_and_memo_sandbox" element={<RenderAndMemoSandbox />} />
+              <Route path="react_hooks_sandbox" element={<ReactHooksSandbox />} />
+              <Route path="xss_sandbox" element={<XssSandbox />} />
+            </Route>
+          </Routes>
         </BrowserRouter>
       </div>
     </div>
@@ -34,6 +36,7 @@ export default App;
 
 separate containers for each sandbox
 
+useEffect vs useLayoutEffect
 Animation: element pop in/out
 Animation: slide input bottom border
 Throttle/debounce
